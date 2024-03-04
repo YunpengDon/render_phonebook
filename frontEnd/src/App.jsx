@@ -37,7 +37,7 @@ const Persons = ({persons, filterWith, onDelete}) => {
   return(
     <div>
         {persons.map(person => {
-          if (person.name.toLowerCase().includes(filterWith)){
+          if (person.name.toLowerCase().includes(filterWith.toLowerCase())){
             return <p key={person.id}>{person.name} {person.number} <button onClick={()=>onDelete(person)}>delete</button></p>
           }
         })}
