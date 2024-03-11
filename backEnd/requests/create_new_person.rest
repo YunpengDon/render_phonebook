@@ -1,11 +1,32 @@
 GET http://localhost:3001/api/persons
+###
+GET http://localhost:3001/api/persons/65e5f7813cbd23ee5009f6d1
 
-### 
+### Test add new person
 POST http://localhost:3001/api/persons
 Content-Type:  application/json
 
 {
-    "id": 100,
     "name": "dkhlsdnyk",
     "number": "040-123456"
 }
+
+### Test wihout name
+POST http://localhost:3001/api/persons
+Content-Type:  application/json
+
+{
+    "number": "040-123456"
+}
+### Test with replicate name
+POST http://localhost:3001/api/persons
+Content-Type:  application/json
+
+{
+    "name": "Anna",
+    "number": "040-123456"
+}
+
+###
+GET http://localhost:3001/info
+

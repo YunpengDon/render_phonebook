@@ -1,1 +1,4 @@
+DELETE http://localhost:3001/api/persons/65ef39afb7ad0f378347ab86
+
+### test delete non-existed person 
 DELETE http://localhost:3001/api/persons/2
