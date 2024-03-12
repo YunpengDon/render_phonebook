@@ -44,7 +44,7 @@ app.get('/api/persons', (request, response) => {
     })
 })
 
-app.get('/api/persons/:id', (request, response) => {
+app.get('/api/persons/:id', (request, response, next) => {
     // const id = Number(request.params.id)
     // const phone = phonebook.find(person => person.id === id)
     // if (phone) {
@@ -57,6 +57,7 @@ app.get('/api/persons/:id', (request, response) => {
         .then(person=>{
             response.json(person)
         })
+        .catch(error=>next(error))
 })
 
 app.get('/info', (request, response) => {
@@ -67,7 +68,7 @@ app.get('/info', (request, response) => {
     })
 })
 
-app.post('/api/persons', (request, response) => {
+app.post('/api/persons', (request, response, next) => {
     const body = request.body
     // Reject the request if the name or number is missing
     if (body.name === undefined) {
@@ -96,7 +97,7 @@ app.post('/api/persons', (request, response) => {
             })
             newPerson.save().then(savedPerson=>{
                 response.json(savedPerson)
-            })
+            }).catch(error=>next(error))
         }
     })
 
@@ -112,7 +113,7 @@ app.post('/api/persons', (request, response) => {
     
 })
 
-app.delete('/api/persons/:id', (request, response) => {
+app.delete('/api/persons/:id', (request, response, next) => {
     // const id = Number(request.params.id)
     // const phone = phonebook.find(person => person.id === id)
     // if (phone) {
@@ -129,6 +130,24 @@ app.delete('/api/persons/:id', (request, response) => {
         })
         .catch(error => next(error))
 })
+
+
+const unknownEndpoint = (request, response) => {
+    response.status(404).send({ error: 'unknown endpoint' })
+  }
+  
+app.use(unknownEndpoint)
+  
+const errorHandler = (error, request, response, next) => {
+    console.error(error.message)
+    if (error.name === 'CastError') {
+        return response.status(400).send({ error: 'malformatted id' })
+    } 
+    next(error)
+}
+// this has to be the last loaded middleware, also all the routes should be registered before this!
+app.use(errorHandler)
+  
 
 PORT = process.env.PORT
 app.listen(PORT,()=>{
