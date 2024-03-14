@@ -110,6 +110,15 @@ const App = () => {
         setTimeout(() => {
           setAlterMessage(defaultAlertMessage)
         }, 5000);
+      }).catch(error=>{
+        console.log(error);
+        setAlterMessage({
+          text: error.response.data.error,
+          type: 'error'
+        })
+        setTimeout(() => {
+          setAlterMessage(defaultAlertMessage)
+        }, 5000);
       })
   }
 
@@ -128,11 +137,15 @@ const App = () => {
   const handleDeletePerson = (person) => {
     if (confirm(`Delete ${person.name}?`)) {
       console.log(`Delete ${person.name}`)
-      personService.cdelete(person.id).then(returnedInfo=>{
-        console.log(returnedInfo)
-        setPersons(persons.filter(p=>p.id !== person.id))
-      }
-      )
+      personService.cdelete(person.id)
+        .then(returnedInfo=>{
+          console.log(returnedInfo)
+          setPersons(persons.filter(p=>p.id !== person.id))
+          setAlterMessage({...defaultAlertMessage, text: `Deleted ${returnedInfo.name}`})
+          setTimeout(() => {
+            setAlterMessage(defaultAlertMessage)
+          }, 5000);
+        })
     }
     else {
       console.log(`Keep ${person.name}`)

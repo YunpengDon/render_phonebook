@@ -27,6 +27,15 @@ Content-Type:  application/json
     "number": "040-123456"
 }
 
+### Test with name length < 3
+POST http://localhost:3001/api/persons
+Content-Type:  application/json
+
+{
+    "name": "Aa",
+    "number": "040-123456"
+}
+
 ###
 GET http://localhost:3001/info
 
